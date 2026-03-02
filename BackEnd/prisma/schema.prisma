@@ -1,0 +1,13 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/@types/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum USER_ROLE {
+  ADMIN 
+  DEFAULT
+}
