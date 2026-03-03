@@ -72,7 +72,7 @@ model Feedback {
   @@map("feedbacks")
 }
 
-model Pijamas {
+model Pijama {
   id           Int      @id @default(autoincrement())
   publicId     String   @unique @map("public_id") @default(uuid())
 
@@ -101,7 +101,7 @@ model PijamaSize {
   stock_quantity Int
   size           TAMANHO
   pijamaId       Int      @map("pijama_id")
-  pijama         Pijamas  @relation(fields: [pijamaId], references: [id])
+  pijama         Pijama  @relation(fields: [pijamaId], references: [id])
 
   @@unique([pijamaId, size])
   @@map("pijama_sizes")
@@ -131,7 +131,7 @@ model SalePijama {
   quantity  Int
   price     Float
   pijamaId  Int      @map("pijama_id")
-  pijama    Pijamas  @relation(fields: [pijamaId], references: [id])
+  pijama    Pijama  @relation(fields: [pijamaId], references: [id])
   saleId    Int      @map("sale_id")
   sale      Sale     @relation(fields: [saleId], references: [id])
 
