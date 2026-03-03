@@ -21,6 +21,13 @@ enum GENERO {
   FEMININO
 }
 
+enum TAMANHO {
+  PP
+  P
+  M
+  G
+  GG
+}
 // ========== MODELS ==========
 
 model User {
@@ -68,6 +75,7 @@ model Feedback {
 model Pijamas {
   id           Int      @id @default(autoincrement())
   publicId     String   @unique @map("public_id") @default(uuid())
+
   name         String
   description  String
   image        String
@@ -91,7 +99,7 @@ model PijamaSize {
   id             Int      @id @default(autoincrement())
   publicId       String   @unique @map("public_id") @default(uuid())
   stock_quantity Int
-  size           Int
+  size           TAMANHO
   pijamaId       Int      @map("pijama_id")
   pijama         Pijamas  @relation(fields: [pijamaId], references: [id])
 
