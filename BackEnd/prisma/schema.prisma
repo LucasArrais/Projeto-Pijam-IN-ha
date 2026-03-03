@@ -92,7 +92,7 @@ model Pijama {
   image        String
   price        Float
   season       ESTACAO
-  types        TIPO
+  type         TIPO
   gender       GENERO
   favorite     Boolean  @default(false)
   on_sale      Boolean  @default(false)
@@ -119,17 +119,17 @@ model PijamaSize {
 }
 
 model Sale {
-  id            Int      @id @default(autoincrement())
-  publicId      String   @unique @map("public_id") @default(uuid())
-  buyer_name    String
-  cpf           String   @unique
-  price         Float
-  payment_method String
-  installments  Int      @default(1)
-  card_number   String?
-  addressId     Int      @map("address_id")
-  address       Address  @relation(fields: [addressId], references: [id])
-  createdAt     DateTime @default(now()) @map("created_at")
+  id              Int      @id @default(autoincrement())
+  publicId        String   @unique @map("public_id") @default(uuid())
+  buyer_name      String
+  cpf             String   @unique
+  price           Float
+  payment_method  String
+  installments    Int      @default(1)
+  card_number     String?
+  addressId       Int      @map("address_id")
+  address         Address  @relation(fields: [addressId], references: [id])
+  createdAt       DateTime @default(now()) @map("created_at")
 
   sale_Pijama   SalePijama[]
 

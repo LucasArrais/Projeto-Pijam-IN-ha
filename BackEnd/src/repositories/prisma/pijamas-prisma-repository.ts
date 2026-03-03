@@ -7,10 +7,19 @@ export class PrismaPijamasRepository implements PijamasRepository{
         return await prisma.pijama.create({data})
     }
     async findBy(where: Prisma.PijamaWhereInput){
-        return await prisma.pijama.findFirst({where})
+        return await prisma.pijama.findFirst({
+            where,
+            include: {
+                pijama_size: true,
+            }
+        })
     }
     async list(){
-        return await prisma.pijama.findMany()
+        return await prisma.pijama.findMany({
+            include: {
+                pijama_size: true,
+            }
+        })
     }
     async update(id: number, data: Prisma.PijamaUpdateInput){
         return await prisma.pijama.update({
