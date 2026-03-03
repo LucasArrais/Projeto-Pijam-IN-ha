@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-//import { appRoutes } from './libs/http/controller/routes.js' importar depois com a criação da pasta controller
+import { appRoutes } from '@/http/controller/routes.js'
 import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
 import { env } from '@/env/index.js'
@@ -15,7 +15,7 @@ app.register(cors, {
   credentials: true,
 })
 
-//app.register(appRoutes)
+app.register(appRoutes)
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {
