@@ -2,7 +2,7 @@ import fastify from 'fastify'
 //import { appRoutes } from './libs/http/controller/routes.js' importar depois com a criação da pasta controller
 import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
-import { env } from 'process'
+import { env } from '@/env/index.js'
 import cors from '@fastify/cors'
 
 export const app = fastify()
