@@ -17,8 +17,10 @@ enum USER_ROLE {
 }
 
 enum GENERO {
+  UNISSEX
   MASCULINO
   FEMININO
+  FAMILIA
 }
 
 enum TAMANHO {
@@ -27,6 +29,15 @@ enum TAMANHO {
   M
   G
   GG
+}
+enum TIPO {
+  INFANTIL 
+  ADULTO 
+}
+
+enum ESTACAO {
+  INVERNO 
+  VERAO
 }
 // ========== MODELS ==========
 
@@ -80,8 +91,8 @@ model Pijama {
   description  String
   image        String
   price        Float
-  season       String
-  types        Int
+  season       ESTACAO
+  types        TIPO
   gender       GENERO
   favorite     Boolean  @default(false)
   on_sale      Boolean  @default(false)
