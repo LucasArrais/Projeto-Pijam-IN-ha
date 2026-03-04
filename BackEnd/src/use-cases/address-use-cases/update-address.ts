@@ -35,7 +35,7 @@ export class UpdateAddressUseCase {
         const findAddress = await this.addressRepository.findBy({ publicId })
 
         if (!findAddress) {
-            throw new Error("usuário não encontrado")
+            throw new Error("endereço não encontrado")
         }
 
         const addressRecord = await this.addressRepository.update( findAddress.id , {
