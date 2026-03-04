@@ -1,4 +1,4 @@
-import { ESTACAO, GENERO, TIPO } from '@/@types/prisma/enums.js'
+import { ESTACAO, GENERO, TAMANHO, TIPO } from '@/@types/prisma/enums.js'
 import { PijamaPresenter } from '@/http/presenters/pijamas-presenter.js'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error.js'
 import { makeUpdatePijamaUseCase } from '@/use-cases/factories/pijamas/make-update-pijama-use-case.js'
@@ -24,6 +24,7 @@ export async function updatePijama(
       gender: z.enum(GENERO).optional(),
       on_sale: z.boolean().default(false).optional(),
       sale_percent: z.number().min(0).default(0).optional(),
+      pijama_sizes: z.array(z.object({size: z.enum(TAMANHO), stock_quantity: z.number().min(0)}))
     })
 
     const { publicId } = updatePijamaParamsSchema.parse(request.params)
