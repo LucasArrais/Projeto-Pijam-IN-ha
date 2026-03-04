@@ -7,4 +7,7 @@ export async function pijamasRoutes(app: FastifyInstance) {
     app.post('/', createPijama)
     app.patch('/:publicId', updatePijama)
     app.get('/:publicId', getPijama)
+
+    //app.get('/publicId', )
+    //app.delete('/:publicId', )
 }
