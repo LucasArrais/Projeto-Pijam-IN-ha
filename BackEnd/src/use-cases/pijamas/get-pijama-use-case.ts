@@ -1,28 +1,29 @@
-import type { PijamaWithSizes, PijamasRepository } from "@/repositories/pijamas-repository.js"
-import { ResourceNotFoundError } from "../errors/resource-not-found-error.js"
+import type {
+  PijamaWithSizes,
+  PijamasRepository,
+} from '@/repositories/pijamas-repository.js'
+import { ResourceNotFoundError } from '../errors/resource-not-found-error.js'
 
 interface GetPijamaUseCaseRequest {
-    publicId: string
+  publicId: string
 }
 
 type GetPijamaUseCaseResponse = {
-    pijama: PijamaWithSizes
+  pijama: PijamaWithSizes
 }
 
 export class GetPijamaUseCase {
-    constructor (private pijamasRepository: PijamasRepository){}
+  constructor(private pijamasRepository: PijamasRepository) {}
 
-    async execute ({
-        publicId
-    }: GetPijamaUseCaseRequest): Promise<GetPijamaUseCaseResponse>{
-        const pijama = await this.pijamasRepository.findBy({publicId})
-        
-        if(!pijama){
-            throw new ResourceNotFoundError()
-        }
-        
-        return {pijama}
+  async execute({
+    publicId,
+  }: GetPijamaUseCaseRequest): Promise<GetPijamaUseCaseResponse> {
+    const pijama = await this.pijamasRepository.findBy({ publicId })
+
+    if (!pijama) {
+      throw new ResourceNotFoundError()
     }
 
-    
+    return { pijama }
+  }
 }

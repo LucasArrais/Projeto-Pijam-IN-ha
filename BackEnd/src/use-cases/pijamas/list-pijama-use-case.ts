@@ -1,15 +1,35 @@
-import type { PijamaWithSizes, PijamasRepository } from "@/repositories/pijamas-repository.js"
+import type {
+  PijamaWithSizes,
+  PijamasRepository,
+} from '@/repositories/pijamas-repository.js'
 
-type ListPijamasUseCaseResponse = {
-    pijamas: PijamaWithSizes[]
+interface ListPijamasUseCaseRequest {
+  name?: string
+  page?: number
+  limit?: number
 }
+type ListPijamasUseCaseResponse = {
+  pijamas: PijamaWithSizes[]
+  totalCount: number
+  totalPages: number
+  currentPage: number
+} 
 
 export class ListPijamasUseCase {
-    constructor (private pijamasRepository: PijamasRepository){}
+  constructor(private pijamasRepository: PijamasRepository) {}
 
-    async execute (): Promise<ListPijamasUseCaseResponse>{
-        const pijamas = await this.pijamasRepository.list()
-        
-        return {pijamas}
-    }    
+  async execute({
+    name,
+    page,
+    limit,
+  }: ListPijamasUseCaseRequest): Promise<ListPijamasUseCaseResponse> {
+    const {
+      data: pijamas,
+      totalCount,
+      totalPages,
+      currentPage,
+    } = await this.pijamasRepository.list({ name, page, limit })
+
+    return { pijamas, totalCount, totalPages, currentPage }
+  }
 }
