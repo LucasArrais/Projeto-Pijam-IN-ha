@@ -36,11 +36,11 @@ export class CreatePijamaUseCase {
             ...request,
             pijama_size: {
                 create: [
-                    { size: TAMANHO.PP, stock_quantity: 0 },
-                    { size: TAMANHO.P, stock_quantity: 0 },
-                    { size: TAMANHO.M, stock_quantity: 0 },
-                    { size: TAMANHO.G, stock_quantity: 0 },
-                    { size: TAMANHO.GG, stock_quantity: 0 },
+                    { size: TAMANHO.PP, stock_quantity: 1 },
+                    { size: TAMANHO.P, stock_quantity: 1 },
+                    { size: TAMANHO.M, stock_quantity: 1 },
+                    { size: TAMANHO.G, stock_quantity: 1 },
+                    { size: TAMANHO.GG, stock_quantity: 1 },
                 ]
             }
         })
