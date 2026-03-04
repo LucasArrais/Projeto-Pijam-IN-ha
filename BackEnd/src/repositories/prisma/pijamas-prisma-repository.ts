@@ -1,4 +1,4 @@
-import type { Prisma } from "@/@types/prisma/client.js";
+import type { ESTACAO, GENERO, Prisma, TIPO } from "@/@types/prisma/client.js";
 import { prisma } from "@/libs/prisma.js";
 import type { PijamasRepository } from "../pijamas-repository.js";
 
@@ -41,5 +41,19 @@ export class PrismaPijamasRepository implements PijamasRepository{
             where: {id},
         })
     }
+    async findManyBy(filters: {season?: ESTACAO, type?: TIPO, gender?: GENERO}) {
+        const where: Prisma.PijamaWhereInput = {
+          ...(filters.season && { season: filters.season }),
+          ...(filters.type && { type: filters.type }),
+          ...(filters.gender && { gender: filters.gender }),
+        }
+      
+        return prisma.pijama.findMany({
+          where,
+          include: {
+            pijama_size: true,
+          },
+        })
+      }
 
 }
