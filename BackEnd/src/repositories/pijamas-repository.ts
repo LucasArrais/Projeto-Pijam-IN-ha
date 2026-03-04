@@ -1,9 +1,13 @@
-import type { Prisma, Pijama } from "@/@types/prisma/client.js";
+import type { Prisma } from "@/@types/prisma/client.js";
+
+export type PijamaWithSizes = Prisma.PijamaGetPayload<{
+    include: { pijama_size: true }
+  }>
 
 export interface PijamasRepository{
-    create(data: Prisma.PijamaCreateInput): Promise<Pijama>
-    findBy(where: Prisma.PijamaWhereInput): Promise<Pijama | null>
-    list(): Promise<Pijama[]>
-    update(id: number, data: Prisma.PijamaUpdateInput): Promise<Pijama>
+    create(data: Prisma.PijamaCreateInput): Promise<PijamaWithSizes>
+    findBy(where: Prisma.PijamaWhereInput): Promise<PijamaWithSizes | null>
+    list(): Promise<PijamaWithSizes[]>
+    update(id: number, data: Prisma.PijamaUpdateInput): Promise<PijamaWithSizes>
     delete(id: number): Promise<void>
 }
