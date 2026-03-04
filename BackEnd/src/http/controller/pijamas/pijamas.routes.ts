@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { createPijama } from "./create-pijama.controller.js";
 import { updatePijama } from "./update-pijama.controller.js";
 import { getPijama } from "./get-pijama.controller.js";
+import { deletePijama } from "./delete-pijama.controller.js";
 
 export async function pijamasRoutes(app: FastifyInstance) {
     app.post('/', createPijama)
@@ -9,5 +10,5 @@ export async function pijamasRoutes(app: FastifyInstance) {
     app.get('/:publicId', getPijama)
 
     //app.get('/publicId', )
-    //app.delete('/:publicId', )
+    app.delete('/:publicId', deletePijama)
 }

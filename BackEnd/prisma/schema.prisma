@@ -112,7 +112,7 @@ model PijamaSize {
   stock_quantity Int
   size           TAMANHO
   pijamaId       Int      @map("pijama_id")
-  pijama         Pijama  @relation(fields: [pijamaId], references: [id])
+  pijama         Pijama  @relation(fields: [pijamaId], references: [id],       onDelete: Cascade)
 
   @@unique([pijamaId, size])
   @@map("pijama_sizes")

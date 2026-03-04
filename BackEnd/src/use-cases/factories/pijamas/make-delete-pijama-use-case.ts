@@ -2,7 +2,7 @@ import { PrismaPijamasRepository } from "@/repositories/prisma/pijamas-prisma-re
 import { DeletePijamaUseCase } from "@/use-cases/pijamas/delete-pijama-use-case.js";
 
 
-export function makeDeletePostUseCase(){
+export function makeDeletePijamaUseCase(){
     const pijamasRepository = new PrismaPijamasRepository()
     const deletePijamaUseCase = new DeletePijamaUseCase(pijamasRepository)
 
