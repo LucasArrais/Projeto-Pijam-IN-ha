@@ -24,4 +24,10 @@ export class PrismaAddressRepository implements AddressRepository {
             data
         })
     }
+
+    async delete(id: number) {
+        await prisma.address.delete({
+            where: {id}
+        })
+    }
 }
