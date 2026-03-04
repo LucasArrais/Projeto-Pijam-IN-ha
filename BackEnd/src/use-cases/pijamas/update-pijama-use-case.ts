@@ -1,5 +1,5 @@
-import type { PijamasRepository } from "@/repositories/pijamas-repository.js"
-import { ESTACAO, GENERO, TIPO, type Pijama } from "@/@types/prisma/client.js"
+import type { PijamaWithSizes, PijamasRepository } from "@/repositories/pijamas-repository.js"
+import { ESTACAO, GENERO, TIPO } from "@/@types/prisma/client.js"
 import { ResourceNotFoundError } from "../errors/resource-not-found-error.js"
 
 interface UpdatePijamaUseCaseRequest {
@@ -16,7 +16,7 @@ interface UpdatePijamaUseCaseRequest {
 }
 
 type UpdatePijamaUseCaseResponse = {
-    pijama: Pijama
+    pijama: PijamaWithSizes
 }
 
 export class UpdatePijamaUseCase {
