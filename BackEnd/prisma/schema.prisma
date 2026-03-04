@@ -49,7 +49,7 @@ model Address {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  sales        Sale[]
+  sale        Sale?
 
   @@map("addresses")
 }
@@ -103,13 +103,13 @@ model Sale {
   id            Int      @id @default(autoincrement())
   publicId      String   @unique @map("public_id") @default(uuid())
   buyer_name    String
-  cpf           String   @unique
-  price         Float
+  cpf           String   
+  price         Float?
   payment_method String
   installments  Int      @default(1)
-  card_number   String?
-  addressId     Int      @map("address_id")
-  address       Address  @relation(fields: [addressId], references: [id])
+  card_number   String
+  addressId     Int  @unique  @map("address_id")
+  address       Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now()) @map("created_at")
 
   sale_Pijama   SalePijama[]
@@ -121,7 +121,7 @@ model SalePijama {
   id        Int      @id @default(autoincrement())
   publicId  String   @unique @map("public_id") @default(uuid())
   quantity  Int
-  price     Float
+  price     Float?
   pijamaId  Int      @map("pijama_id")
   pijama    Pijamas  @relation(fields: [pijamaId], references: [id])
   saleId    Int      @map("sale_id")
