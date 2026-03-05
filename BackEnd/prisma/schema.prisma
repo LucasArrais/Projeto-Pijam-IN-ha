@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client"
   output   = "../src/@types/prisma"
@@ -7,7 +9,143 @@ datasource db {
   provider = "postgresql"
 }
 
+// ========== ENUMS ==========
+
 enum USER_ROLE {
   ADMIN 
   DEFAULT
+}
+
+enum GENERO {
+  UNISSEX
+  MASCULINO
+  FEMININO
+  FAMILIA
+}
+
+enum TAMANHO {
+  PP
+  P
+  M
+  G
+  GG
+}
+enum TIPO {
+  INFANTIL 
+  ADULTO 
+}
+
+enum ESTACAO {
+  INVERNO 
+  VERAO
+}
+// ========== MODELS ==========
+
+model User {
+  id        Int      @id @default(autoincrement())
+  publicId  String   @unique @map("public_id") @default(uuid())
+  name      String
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      USER_ROLE @default(DEFAULT)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Address {
+  id           Int      @id @default(autoincrement())
+  publicId     String   @unique @map("public_id") @default(uuid())
+  zipCode      String   @map("zip_code")
+  state        String
+  city         String
+  neighborhood String
+  address      String
+  number       String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  sales        Sale[]
+
+  @@map("addresses")
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  publicId  String   @unique @map("public_id") @default(uuid(7))
+  nome      String
+  descricao String
+  avaliacao Float
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("feedbacks")
+}
+
+model Pijama {
+  id           Int      @id @default(autoincrement())
+  publicId     String   @unique @map("public_id") @default(uuid())
+
+  name         String
+  description  String
+  image        String
+  price        Float
+  season       ESTACAO
+  type         TIPO
+  gender       GENERO
+  favorite     Boolean  @default(false)
+  on_sale      Boolean  @default(false)
+  sale_percent Float?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  pijama_size  PijamaSize[]
+  sale_Pijama  SalePijama[]
+
+  @@map("pijamas")
+}
+
+model PijamaSize {
+  id             Int      @id @default(autoincrement())
+  publicId       String   @unique @map("public_id") @default(uuid())
+  stock_quantity Int
+  size           TAMANHO
+  pijamaId       Int      @map("pijama_id")
+  pijama         Pijama  @relation(fields: [pijamaId], references: [id],       onDelete: Cascade)
+
+  @@unique([pijamaId, size])
+  @@map("pijama_sizes")
+}
+
+model Sale {
+  id              Int      @id @default(autoincrement())
+  publicId        String   @unique @map("public_id") @default(uuid())
+  buyer_name      String
+  cpf             String   @unique
+  price           Float
+  payment_method  String
+  installments    Int      @default(1)
+  card_number     String?
+  addressId       Int      @map("address_id")
+  address         Address  @relation(fields: [addressId], references: [id])
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sale_Pijama   SalePijama[]
+
+  @@map("sales")
+}
+
+model SalePijama {
+  id        Int      @id @default(autoincrement())
+  publicId  String   @unique @map("public_id") @default(uuid())
+  quantity  Int
+  price     Float
+  pijamaId  Int      @map("pijama_id")
+  pijama    Pijama  @relation(fields: [pijamaId], references: [id])
+  saleId    Int      @map("sale_id")
+  sale      Sale     @relation(fields: [saleId], references: [id])
+
+  @@unique([pijamaId, saleId])
+  @@map("sale_pijamas")
 }
