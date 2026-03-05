@@ -17,10 +17,28 @@ enum USER_ROLE {
 }
 
 enum GENERO {
+  UNISSEX
   MASCULINO
   FEMININO
+  FAMILIA
 }
 
+enum TAMANHO {
+  PP
+  P
+  M
+  G
+  GG
+}
+enum TIPO {
+  INFANTIL 
+  ADULTO 
+}
+
+enum ESTACAO {
+  INVERNO 
+  VERAO
+}
 // ========== MODELS ==========
 
 model User {
@@ -65,15 +83,16 @@ model Feedback {
   @@map("feedbacks")
 }
 
-model Pijamas {
+model Pijama {
   id           Int      @id @default(autoincrement())
   publicId     String   @unique @map("public_id") @default(uuid())
+
   name         String
   description  String
   image        String
   price        Float
-  season       String
-  types        Int
+  season       ESTACAO
+  type         TIPO
   gender       GENERO
   favorite     Boolean  @default(false)
   on_sale      Boolean  @default(false)
@@ -91,26 +110,26 @@ model PijamaSize {
   id             Int      @id @default(autoincrement())
   publicId       String   @unique @map("public_id") @default(uuid())
   stock_quantity Int
-  size           Int
+  size           TAMANHO
   pijamaId       Int      @map("pijama_id")
-  pijama         Pijamas  @relation(fields: [pijamaId], references: [id])
+  pijama         Pijama  @relation(fields: [pijamaId], references: [id],       onDelete: Cascade)
 
   @@unique([pijamaId, size])
   @@map("pijama_sizes")
 }
 
 model Sale {
-  id            Int      @id @default(autoincrement())
-  publicId      String   @unique @map("public_id") @default(uuid())
-  buyer_name    String
-  cpf           String   @unique
-  price         Float
-  payment_method String
-  installments  Int      @default(1)
-  card_number   String?
-  addressId     Int      @map("address_id")
-  address       Address  @relation(fields: [addressId], references: [id])
-  createdAt     DateTime @default(now()) @map("created_at")
+  id              Int      @id @default(autoincrement())
+  publicId        String   @unique @map("public_id") @default(uuid())
+  buyer_name      String
+  cpf             String   @unique
+  price           Float
+  payment_method  String
+  installments    Int      @default(1)
+  card_number     String?
+  addressId       Int      @map("address_id")
+  address         Address  @relation(fields: [addressId], references: [id])
+  createdAt       DateTime @default(now()) @map("created_at")
 
   sale_Pijama   SalePijama[]
 
@@ -123,7 +142,7 @@ model SalePijama {
   quantity  Int
   price     Float
   pijamaId  Int      @map("pijama_id")
-  pijama    Pijamas  @relation(fields: [pijamaId], references: [id])
+  pijama    Pijama  @relation(fields: [pijamaId], references: [id])
   saleId    Int      @map("sale_id")
   sale      Sale     @relation(fields: [saleId], references: [id])
 
