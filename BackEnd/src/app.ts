@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import { appRoutes } from './http/controller/routes.js'
+import { appRoutes } from './http/controller/routes.js'  
 import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
 import { env } from '@/env/index.js'
@@ -27,8 +27,7 @@ app.setErrorHandler((error, _request, reply) => {
 
   if (error instanceof SyntaxError) {
     return reply.status(400).send({
-      message:
-        'O corpo da requisição não está em formato JSON válido. Verifique as informações.',
+      message: 'O corpo da requisição não está em formato JSON válido. Verifique as informações.',
     })
   }
 
