@@ -12,17 +12,26 @@ export async function getPijamasByFilters(
     season: z.enum(ESTACAO).optional(),
     type: z.enum(TIPO).optional(),
     gender: z.enum(GENERO).optional(),
+    page: z.coerce.number().min(1).default(1),
+    limit: z.coerce.number().min(1).max(50).default(12),
   })
 
-  const { season, type, gender } = queryParams.parse(request.query)
+  const { season, type, gender, page, limit } = queryParams.parse(request.query)
 
   const getPijamasByFilters = makeGetPijamasByFiltersUseCase()
 
-  const { pijamas } = await getPijamasByFilters.execute({
+  const result = await getPijamasByFilters.execute({
     season,
     type,
     gender,
+    page,
+    limit,
   })
 
-  return reply.status(200).send(PijamaPresenter.toHTTP(pijamas))
+  return reply.status(200).send({
+    data: PijamaPresenter.toHTTP(result.data),
+    totalCount: result.totalCount,
+    totalPages: result.totalPages,
+    currentPage: result.currentPage,
+  })
 }

@@ -10,7 +10,22 @@ interface ListPijamasQuery {
   limit?: number
 }
 
-interface ListPijamasResponse {
+export interface ListPijamasResponse {
+  data: PijamaWithSizes[]
+  totalCount: number
+  totalPages: number
+  currentPage: number
+}
+
+export interface FindManyByFilters {
+  season?: ESTACAO
+  type?: TIPO
+  gender?: GENERO
+  page?: number
+  limit?: number
+}
+
+export interface FindManyByResponse {
   data: PijamaWithSizes[]
   totalCount: number
   totalPages: number
@@ -23,9 +38,5 @@ export interface PijamasRepository {
   list(query: ListPijamasQuery): Promise<ListPijamasResponse>
   update(id: number, data: Prisma.PijamaUpdateInput): Promise<PijamaWithSizes>
   delete(id: number): Promise<void>
-  findManyBy(filters: {
-    season?: ESTACAO
-    type?: TIPO
-    gender?: GENERO
-  }): Promise<PijamaWithSizes[]>
+  findManyBy(filters: FindManyByFilters): Promise<FindManyByResponse>
 }

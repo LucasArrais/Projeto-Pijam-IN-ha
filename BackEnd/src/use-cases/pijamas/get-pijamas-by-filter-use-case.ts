@@ -1,17 +1,15 @@
 import type { ESTACAO, GENERO, TIPO } from '@/@types/prisma/enums.js'
 import type {
-  PijamaWithSizes,
   PijamasRepository,
+  FindManyByResponse,  
 } from '@/repositories/pijamas-repository.js'
 
 interface GetPijamasByFiltersUseCaseRequest {
   season?: ESTACAO
   type?: TIPO
   gender?: GENERO
-}
-
-type GetPijamasByFiltersUseCaseResponse = {
-  pijamas: PijamaWithSizes[]
+  page?: number
+  limit?: number
 }
 
 export class GetPijamasByFiltersUseCase {
@@ -21,13 +19,17 @@ export class GetPijamasByFiltersUseCase {
     season,
     type,
     gender,
-  }: GetPijamasByFiltersUseCaseRequest): Promise<GetPijamasByFiltersUseCaseResponse> {
-    const pijamas = await this.pijamasRepository.findManyBy({
+    page,
+    limit,
+  }: GetPijamasByFiltersUseCaseRequest): Promise<FindManyByResponse> {  
+    const result = await this.pijamasRepository.findManyBy({
       season,
       type,
       gender,
+      page,
+      limit,
     })
 
-    return { pijamas }
+    return result
   }
 }

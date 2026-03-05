@@ -1,6 +1,6 @@
-import type { ESTACAO, GENERO, Prisma, TIPO } from '@/@types/prisma/client.js'
+import type { Prisma} from '@/@types/prisma/client.js'
 import { prisma } from '@/libs/prisma.js'
-import type { PijamasRepository } from '../pijamas-repository.js'
+import type { FindManyByFilters, PijamasRepository } from '../pijamas-repository.js'
 
 export class PrismaPijamasRepository implements PijamasRepository {
   async create(data: Prisma.PijamaCreateInput) {
@@ -11,6 +11,7 @@ export class PrismaPijamasRepository implements PijamasRepository {
       },
     })
   }
+
   async findBy(where: Prisma.PijamaWhereInput) {
     return await prisma.pijama.findFirst({
       where,
@@ -19,6 +20,7 @@ export class PrismaPijamasRepository implements PijamasRepository {
       },
     })
   }
+
   async list({
     name,
     page = 1,
@@ -61,6 +63,7 @@ export class PrismaPijamasRepository implements PijamasRepository {
       currentPage: page,
     }
   }
+
   async update(id: number, data: Prisma.PijamaUpdateInput) {
     return await prisma.pijama.update({
       where: { id },
@@ -70,27 +73,40 @@ export class PrismaPijamasRepository implements PijamasRepository {
       },
     })
   }
+
   async delete(id: number) {
     await prisma.pijama.delete({
       where: { id },
     })
   }
-  async findManyBy(filters: {
-    season?: ESTACAO
-    type?: TIPO
-    gender?: GENERO
-  }) {
+
+  async findManyBy(filters: FindManyByFilters) {
+    const { season, type, gender, page = 1, limit = 12 } = filters
+    const skip = (page - 1) * limit
+
     const where: Prisma.PijamaWhereInput = {
-      ...(filters.season && { season: filters.season }),
-      ...(filters.type && { type: filters.type }),
-      ...(filters.gender && { gender: filters.gender }),
+      ...(season && { season }),
+      ...(type && { type }),
+      ...(gender && { gender }),
     }
 
-    return prisma.pijama.findMany({
+    const pijamas = await prisma.pijama.findMany({
       where,
+      skip,
+      take: limit,
       include: {
         pijama_size: true,
       },
     })
+
+    const totalCount = await prisma.pijama.count({ where })
+    const totalPages = Math.ceil(totalCount / limit)
+
+    return {
+      data: pijamas,
+      totalCount,
+      totalPages,
+      currentPage: page,
+    }
   }
 }
