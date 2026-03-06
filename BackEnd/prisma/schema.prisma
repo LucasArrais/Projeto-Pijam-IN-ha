@@ -59,7 +59,7 @@ model Feedback {
   publicId  String   @unique @map("public_id") @default(uuid(7))
   nome      String
   descricao String
-  avaliacao Float
+  avaliacao Float?
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("feedbacks")

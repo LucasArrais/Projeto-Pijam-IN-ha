@@ -4,7 +4,7 @@ import type { FeedbacksRepository } from '@/repositories/feebacks-repository.js'
 interface CreateFeedbackRequest {
   nome: string
   descricao: string
-  avaliacao: number
+  avaliacao?: number | null
 }
 
 interface CreateFeedbackResponse {
@@ -15,10 +15,12 @@ export class CreateFeedbackUseCase {
   constructor(private feedbacksRepository: FeedbacksRepository) {}
 
   async execute(request: CreateFeedbackRequest): Promise<CreateFeedbackResponse> {
-    const { nome, descricao, avaliacao } = request
+    const { nome, descricao, avaliacao = null } = request
 
-    if (avaliacao < 0 || avaliacao > 5) {
-      throw new Error('Avaliação deve ser entre 0 e 5')
+    if (avaliacao !== null) {
+        if (avaliacao < 0 || avaliacao > 5) {
+        throw new Error('Avaliação deve ser entre 0 e 5')
+      }
     }
 
     const feedback = await this.feedbacksRepository.create({

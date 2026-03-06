@@ -9,7 +9,7 @@ export async function createFeedbackController(
   const createFeedbackBodySchema = z.object({
     nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
     descricao: z.string().min(10, 'Descrição deve ter pelo menos 10 caracteres'),
-    avaliacao: z.number().min(0).max(5, 'Avaliação deve ser entre 0 e 5')
+    avaliacao: z.number().min(0).max(5, 'Avaliação deve ser entre 0 e 5').optional()
   })
 
   const result = createFeedbackBodySchema.safeParse(request.body)
@@ -28,7 +28,7 @@ export async function createFeedbackController(
     const { feedback } = await createFeedbackUseCase.execute({
       nome,
       descricao,
-      avaliacao
+      avaliacao: avaliacao ?? null
     })
 
     return reply.status(201).send(feedback)
