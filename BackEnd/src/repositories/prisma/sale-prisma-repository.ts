@@ -91,7 +91,7 @@ export class PrismaSaleRepository implements SaleRepository {
             include: {
                 sale_Pijama: true,
                 address: {
-                    include: { sale: true }
+                    include: { sales: true }
                 }
             }
         })
@@ -107,15 +107,15 @@ export class PrismaSaleRepository implements SaleRepository {
                 where: { id: sale.id }
             })
 
-            if (sale.address) {
+            if (sale.addressId) {
                 const addressWithSales = await tx.address.findUnique({
-                    where: { id: sale.address.id },
-                    include: { sale: true }
+                    where: { id: sale.addressId },
+                    include: { sales: true }
                 })
                 
-                if (addressWithSales && !addressWithSales.sale) {
+                if (addressWithSales && !addressWithSales.sales.length) {
                     await tx.address.delete({
-                        where: { id: sale.address.id }
+                        where: { id: sale.addressId }
                     })
                 }
             }
